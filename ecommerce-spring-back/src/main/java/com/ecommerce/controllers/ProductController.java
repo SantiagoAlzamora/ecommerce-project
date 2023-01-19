@@ -9,6 +9,7 @@ import com.ecommerce.entities.Product;
 import com.ecommerce.services.ProductService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,14 +32,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("")
-    public Product saveProduct(@RequestBody Product product) {
-
+    @PostMapping
+    public ResponseEntity<Object> saveProduct(@RequestBody Product product) {
+        System.out.println("entre");
         try {
+            System.out.println(product);
             Product savedProduct = productService.save(product);
-            return savedProduct;
+            return ResponseEntity.status(201).body(savedProduct);
         } catch (Exception e) {
-            return null;
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(400).body("Error creando");
         }
 
     }
